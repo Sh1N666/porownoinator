@@ -1,0 +1,52 @@
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: porownoinator-db
+    user: root
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=P@ssw0rd
+      - MSSQL_PID=Developer
+    ports:
+      - "5443:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    networks:
+      - porownoinator-net
+
+  api-inator:
+    build:
+      context: .
+      dockerfile: src/ApiInator/Dockerfile
+    container_name: api-inator
+    ports:
+      - 13001:13001
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=database;Database=PorownoinatorDb;User Id=sa;Password=P@ssw0rd;TrustServerCertificate=True
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - porownoinator-net
+
+  gateway:
+    build:
+      context: .
+      dockerfile: src/Gateway.Frontend/Dockerfile
+    container_name: gateway-frontend
+    ports:
+      - "443:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - api-inator
+    networks:
+      - porownoinator-net
+
+networks:
+  porownoinator-net:
+    driver: bridge
+
+volumes:
+  mssql-data:
