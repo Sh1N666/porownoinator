@@ -1,7 +1,7 @@
 services:
   database:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: porownoinator-db
+    container_name: Worthinator-db
     user: root
     environment:
       - ACCEPT_EULA=Y
@@ -12,7 +12,13 @@ services:
     volumes:
       - mssql-data:/var/opt/mssql
     networks:
-      - porownoinator-net
+      - Worthinator-net
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'P@ssw0rd' -Q 'SELECT 1' -No || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
   api-inator:
     build:
@@ -20,15 +26,15 @@ services:
       dockerfile: src/ApiInator/Dockerfile
     container_name: api-inator
     ports:
-      - 13001:13001
+      - "13001:13001"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=database;Database=PorownoinatorDb;User Id=sa;Password=P@ssw0rd;TrustServerCertificate=True
+      - ConnectionStrings__DefaultConnection=Server=database;Database=WorthinatorDb;User Id=sa;Password=P@ssw0rd;TrustServerCertificate=True
     depends_on:
       database:
         condition: service_healthy
     networks:
-      - porownoinator-net
+      - Worthinator-net
 
   gateway:
     build:
@@ -42,10 +48,10 @@ services:
     depends_on:
       - api-inator
     networks:
-      - porownoinator-net
+      - Worthinator-net
 
 networks:
-  porownoinator-net:
+  Worthinator-net:
     driver: bridge
 
 volumes:
