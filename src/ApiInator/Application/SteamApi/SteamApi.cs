@@ -37,6 +37,9 @@ public class SteamDetailsItem
 
     [JsonPropertyName("platforms")]
     public Platforms Platforms { get; set; }
+    
+    [JsonPropertyName("metacritic")]
+    public Metacritic? Metacritic { get; set; }
 
     [JsonPropertyName("price_overview")]
     public DetailsPrice? Price { get; set; }
@@ -48,6 +51,8 @@ public class SteamDetailsItem
     public ReleaseDate ReleaseDate { get; set; }
 }
 
+
+public record Metacritic(int score, string url);
 public record Genre(string description);
 public record Platforms(bool windows, bool mac, bool linux);
 public record DetailsPrice(int initial, int final);
@@ -57,7 +62,7 @@ public class SteamApi
 {
     private readonly ILogger<SteamApi> _logger;
     private readonly HttpClient _steamClient;
-    private const string BASE_URL = "https://store.steampowered.com/api";
+    private static readonly string BASE_URL = "https://store.steampowered.com/api";
 
     public SteamApi(ILogger<SteamApi> logger)
     {

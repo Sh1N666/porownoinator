@@ -22,7 +22,8 @@ async def _fetch_by_name(game_name: str) -> dict[str, object]:
                     "game_name": best_match.game_name,
                     "main_story": best_match.main_story,
                     "main_extra": best_match.main_extra,
-                    "completionist": best_match.completionist
+                    "completionist": best_match.completionist,
+                    "review_score": best_match.review_score
                 },
                 "message": None
             }
@@ -52,7 +53,8 @@ async def _fetch_by_id(game_id: int) -> dict[str, object]:
                     "game_name": result.game_name,
                     "main_story": result.main_story,
                     "main_extra": result.main_extra,
-                    "completionist": result.completionist
+                    "completionist": result.completionist,
+                    "review_score": result.review_score
                 },
                 "message": None
             }

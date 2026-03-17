@@ -1,16 +1,15 @@
 using ApiInator.Application;
+using ApiInator.Application.GGDealsApi;
 using ApiInator.Application.HowLongToBeatApi;
 using ApiInator.Application.SteamApi;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using SlimMessageBus.Host;
 using SlimMessageBus.Host.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddSingleton<ApplicationContext>(sp => new ApplicationContext(connectionString));
 
 builder.Services.AddSlimMessageBus(mbb =>
 {
@@ -21,6 +20,7 @@ builder.Services.AddSlimMessageBus(mbb =>
 builder.Services.AddGrpc();
 builder.Services.AddSteamApi();
 builder.Services.AddHLTBApi();
+builder.Services.AddGgDealsApi();
 
 var app = builder.Build();
 
@@ -29,11 +29,4 @@ app.MapGet("/status", ([FromServices]SteamApi steamApi) => "I'm Alive");
 
 app.MapGrpcService<ApiInatorController>();
 
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-    //db.Database.Migrate();
-}
-
 app.Run();
-

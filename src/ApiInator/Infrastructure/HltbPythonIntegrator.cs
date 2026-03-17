@@ -84,7 +84,8 @@ public class HltbPythonIntegrator
                 GameName = data["game_name"].As<string>(),
                 MainStory = data["main_story"].As<double>(),
                 MainExtra = data["main_extra"].As<double>(),
-                Completionist = data["completionist"].As<double>()
+                Completionist = data["completionist"].As<double>(),
+                ReviewScore = data["review_score"].As<double>()
             };
         }
 
@@ -106,4 +107,5 @@ public class HLTBInfo
     public double MainStory { get; set; }
     public double MainExtra { get; set; }
     public double Completionist { get; set; }
+    public double ReviewScore { get; set; }
 }
