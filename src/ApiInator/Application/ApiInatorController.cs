@@ -1,4 +1,4 @@
-using ApiInator.Protos;
+using ApiInator.Generated;
 using Grpc.Core;
 using SlimMessageBus;
 using SlimMessageBus.Host;
@@ -9,12 +9,13 @@ public class ApiInatorController(IMessageBus messageBus) : WorthinatorService.Wo
 {
     public override async Task<SearchGameResponse> SearchGame(SearchGameRequest request, ServerCallContext context)
     {
-        var searchRequest = new Generated.SearchGameRequest()
-        {
-            Name = request.SearchPhrase
-        };
-        var response = await messageBus.Send(searchRequest);
-        
+        var response = await messageBus.Send(request);
+        return response;
+    }
+
+    public override async Task<GetGameInfoResponse> GetGameInfo(GetGameInfoRequest request, ServerCallContext context)
+    {
+        var response = await messageBus.Send(request);
         return response;
     }
 }
