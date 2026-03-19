@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, delay, from, map, of } from 'rxjs';
+import { Observable, from, map } from 'rxjs';
 import { GrpcWebFetchTransport } from '@protobuf-ts/grpcweb-transport';
 import { WorthinatorServiceClient } from '../generated/worthinator.client';
 import {
