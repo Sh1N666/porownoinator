@@ -16,11 +16,8 @@
             class="relative w-full border border-white/10 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-black aspect-1920/620"
           >
             <img
-              [ngSrc]="
-                'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/' +
-                g.steamAppId +
-                '/library_hero.jpg'
-              "
+              [ngSrc]="bannerUrl()"
+              (error)="handleImageError()"
               fill
               priority
               [alt]="g.name"
@@ -184,12 +181,12 @@
                       >Current_Retail</span
                     >
                     <span
-                      class="text-3xl font-black transition-colors duration-500"
+                      class="text-3xl font-black transition-colors duration-500 flex items-baseline gap-2 whitespace-nowrap"
                       [class.text-brand-green]="
                         (g.ggDeals?.prices?.currentRetail ?? '') <
                         (g.ggDeals?.prices?.currentKeyshops ?? '')
                       "
-                      [class.text-slate-300]="
+                      [class.text-amber-500]="
                         (g.ggDeals?.prices?.currentRetail ?? '') >=
                         (g.ggDeals?.prices?.currentKeyshops ?? '')
                       "
@@ -205,7 +202,7 @@
                       >Current_Keyshops</span
                     >
                     <span
-                      class="text-3xl font-black transition-colors duration-500"
+                      class="text-3xl font-black transition-colors duration-500 flex items-baseline gap-2 whitespace-nowrap"
                       [class.text-brand-green]="
                         (g.ggDeals?.prices?.currentKeyshops ?? '') <
                         (g.ggDeals?.prices?.currentRetail ?? '')
@@ -230,7 +227,9 @@
                     <span class="text-sm uppercase text-slate-500 tracking-wider font-bold"
                       >Hist_Low_Retail</span
                     >
-                    <span class="text-3xl font-bold text-slate-300">
+                    <span
+                      class="text-3xl font-bold text-slate-300 flex items-baseline gap-2 whitespace-nowrap"
+                    >
                       {{ g.ggDeals?.prices?.historicalRetail }}
                       <span class="text-sm font-normal opacity-50">{{
                         g.ggDeals?.prices?.currency
@@ -241,7 +240,9 @@
                     <span class="text-sm uppercase text-slate-500 tracking-wider font-bold"
                       >Hist_Low_Keys</span
                     >
-                    <span class="text-3xl font-bold text-slate-300">
+                    <span
+                      class="text-3xl font-bold text-slate-300 flex items-baseline gap-2 whitespace-nowrap"
+                    >
                       {{ g.ggDeals?.prices?.historicalKeyshops }}
                       <span class="text-sm opacity-60">{{ g.ggDeals?.prices?.currency }}</span>
                     </span>
@@ -249,16 +250,25 @@
                 </div>
               </div>
 
-              <div class="flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                  <span class="text-sm uppercase text-slate-500 tracking-wider font-bold"
-                    >Release_Price</span
-                  >
+              <div class="pb-3">
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="flex items-center">
+                    <span class="text-lg uppercase text-slate-500 tracking-wider font-bold">
+                      Release_Price
+                    </span>
+                  </div>
+
+                  <div class="flex flex-col gap-1 pl-4">
+                    <span
+                      class="text-3xl font-bold text-slate-300 flex items-baseline gap-2 whitespace-nowrap"
+                    >
+                      {{ (g.steamPrice?.initial ?? 0) / 100 | number: '1.2-2' }}
+                      <span class="text-sm font-normal opacity-50">
+                        {{ g.ggDeals?.prices?.currency }}
+                      </span>
+                    </span>
+                  </div>
                 </div>
-                <span class="text-3xl font-bold text-slate-300 tracking-tighter">
-                  {{ (g.steamPrice?.initial ?? 0) / 100 | number: '1.2-2' }}
-                  {{ g.ggDeals?.prices?.currency }}
-                </span>
               </div>
 
               <a
