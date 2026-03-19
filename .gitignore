@@ -6,6 +6,7 @@ obj/
 *.sln.doccache
 .vs/
 .root
+.env
 
 # === [ JetBrains Rider ] ===
 .idea/
