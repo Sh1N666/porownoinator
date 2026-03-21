@@ -11,6 +11,7 @@ Aplikacja opiera się na architekturze mikroserwisów z wykorzystaniem kontener�
 * **Baza Danych (`database`):** Instancja MongoDB w wersji 7.0 z odpowiednio skonfigurowanymi mechanizmami uwierzytelniania i healthcheckiem (`mongosh`).
 
 Diagram bazy danych:
+
 <img width="284" height="710" alt="image" src="https://github.com/user-attachments/assets/6c34f49e-bea0-442b-a857-50f01c095a2b" />
 
 
